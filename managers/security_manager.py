@@ -1,4 +1,4 @@
-ACCESS_PASSWORD = 'dev'
+ACCESS_PASSWORD = 'Rvm82XD9w6Dp25qFn6B0'
 
 class SecurityManager:
     def __init__(self) -> None:

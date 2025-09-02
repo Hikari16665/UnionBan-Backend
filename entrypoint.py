@@ -1,9 +1,12 @@
+from managers.security_manager import SecurityManager
 from routes import *
 import asyncio
 import logging
 from logging import Logger
 from app import UnionBanApp
 from managers.ban_manager import BanManager, DatabaseManager
+
+app = UnionBanApp.get_app()
 
 async def run_app(logger: Logger) -> None:
     logger.info('Starting UnionBan...')
@@ -17,8 +20,8 @@ async def run_app(logger: Logger) -> None:
 
     
     logger.info('Starting server...')
-    app = UnionBanApp.get_app()
-    app.run()
+    
+    app.run(host='0.0.0.0', port=5000)
 
 
 

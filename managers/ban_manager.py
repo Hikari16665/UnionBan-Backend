@@ -29,9 +29,10 @@ class BanManager:
                          reason: str,
                          server: str,
                          created_by: str,
-                         created_at: Optional[datetime.datetime],
-                         expires_at: Optional[datetime.datetime] = None,
-                         is_permanent: bool = False
+                         is_permanent: str,
+                         created_at: Optional[str],
+                         expires_at: Optional[str] = None,
+                         
                          ) -> None:
         await cls.db.execute_sql('''
                                INSERT INTO bans (username, reason, server, created_by, created_at, expires_at, is_permanent)
@@ -65,3 +66,14 @@ class BanManager:
             if ban.username == username:
                 return ban
         raise ValueError(f'Player {username} is not banned.')
+    
+    @classmethod
+    async def review_ban(cls, ban_id: int) -> bool:
+        affected = await cls.db.execute_sql('''
+                               UPDATE bans
+                               SET reviewed = 1
+                               WHERE id = ? AND reviewed = 0
+                               ''',
+                               (ban_id,))
+        await cls.reload_bans()
+        return affected == 1

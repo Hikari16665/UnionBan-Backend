@@ -47,14 +47,19 @@ async def ban_user() -> str:
     else:
         expires_at_date = None
     
+    for ban in BanManager.bans:
+        if ban.username == username:
+            return str(BadRequestResponse({'message': 'User is already banned'}))
+    
     await BanManager.ban_user(
         username,
         reason,
         server,
         created_by,
-        datetime.datetime.now(),
-        expires_at_date,
-        is_permanent
+        '1' if is_permanent == 'true' else '0',
+        datetime.datetime.now().isoformat(),
+        expires_at_date.isoformat() if expires_at_date is not None else None,
+        
     )
     
     return str(SuccessResponse({'message': 'User banned'}))
