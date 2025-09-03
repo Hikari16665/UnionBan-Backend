@@ -13,6 +13,8 @@ app = UnionBanApp.get_app()
 @app.route('/get_bans_noverify', methods=['POST'])
 async def get_bans_noverify() -> str:
 
+
+    await BanManager.reload_bans()
     return str(SuccessResponse({
         'bans': [json.loads(ban.json()) for ban in BanManager.bans if not ban.reviewed]
     }))

@@ -13,10 +13,7 @@ app = UnionBanApp.get_app()
 @app.route('/ban_user', methods=['POST'])
 async def ban_user() -> str:
     data = request.get_json()
-    
-    
-    
-    password = data.get('password')
+
     username = data.get('username')
     reason = data.get('reason')
     server = data.get('server')
@@ -26,7 +23,6 @@ async def ban_user() -> str:
     
     try:
         await VerifyingUtils.not_none(
-            password,
             username,
             reason,
             server,
@@ -35,9 +31,6 @@ async def ban_user() -> str:
         )
     except ValueError as e:
         return str(BadRequestResponse({'message': str(e)}))
-    
-    if not await SecurityManager.verify_password(password):
-        return str(BadRequestResponse({'message': 'Invalid access password'}))
     
     if is_permanent:
         expires_at = None

@@ -4,3 +4,4 @@ aiosqlite
 httpx
 requests
 flask-cors
+PyJWT==2.8.0
